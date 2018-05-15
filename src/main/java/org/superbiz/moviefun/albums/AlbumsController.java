@@ -7,7 +7,6 @@ import java.util.Map;
 
 @Controller
 public class AlbumsController {
-
     private final AlbumsBean albumsBean;
 
     public AlbumsController(AlbumsBean albumsBean) {
