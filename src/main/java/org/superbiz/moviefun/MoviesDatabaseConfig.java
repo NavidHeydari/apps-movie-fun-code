@@ -3,6 +3,7 @@ package org.superbiz.moviefun;
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.orm.jpa.JpaTransactionManager;
@@ -37,15 +38,13 @@ public class MoviesDatabaseConfig {
         return factoryBean;
     }
 
-    @Bean
+    @Bean(value = "movies")
     public PlatformTransactionManager moviesTransactionManager(EntityManagerFactory moviesEntityManagerFactory) {
         return new JpaTransactionManager(moviesEntityManagerFactory);
     }
 
     @Bean
-    public TransactionOperations moviesTransactionTemplate(PlatformTransactionManager moviesTransactionManager) {
+    public TransactionOperations moviesTransactionTemplate(@Qualifier("movies") PlatformTransactionManager moviesTransactionManager) {
         return new TransactionTemplate(moviesTransactionManager);
     }
-
-
 }
