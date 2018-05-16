@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -13,19 +14,37 @@ import java.util.Scanner;
 public class CsvUtils {
 
     public static String readFile(String path) {
-        try {
-            Scanner scanner = new Scanner(new File(path)).useDelimiter("\\A");
 
+        try {
+
+            // returns the Class object associated with this class
+            Class cls = Class.forName("org.superbiz.moviefun.CsvUtils");
+
+            // returns the ClassLoader object associated with this Class.
+            ClassLoader cLoader = cls.getClassLoader();
+
+            InputStream is = cLoader.getResourceAsStream(".");
+            
+//            Scanner scanner = new Scanner(new File(path)).useDelimiter("\\A");
+            Scanner scanner = new Scanner(is).useDelimiter("\\A");
             if (scanner.hasNext()) {
-                return scanner.next();
+                String str = scanner.next();
+                System.out.println("" + str );
+                return str;//scanner.next();
             } else {
                 return "";
             }
 
-        } catch (FileNotFoundException e) {
+//        } catch (FileNotFoundException e) {
+//            throw new RuntimeException(e);
+        } catch(Exception e){
+            e.printStackTrace();
             throw new RuntimeException(e);
         }
+
     }
+
+
 
     public static <T> List<T> readFromCsv(ObjectReader objectReader, String path) {
         try {
