@@ -6,6 +6,7 @@ import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.superbiz.moviefun.blobstore.Blob;
 import org.superbiz.moviefun.blobstore.BlobStore;
 
@@ -18,6 +19,7 @@ import static com.fasterxml.jackson.dataformat.csv.CsvSchema.ColumnType.NUMBER;
 import static org.superbiz.moviefun.CsvUtils.readFromCsv;
 
 @Service
+
 public class AlbumsUpdater {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
@@ -39,6 +41,7 @@ public class AlbumsUpdater {
         objectReader = new CsvMapper().readerFor(Album.class).with(schema);
     }
 
+    @javax.transaction.Transactional
     public void update() throws IOException {
         Optional<Blob> maybeBlob = blobStore.get("albums.csv");
 
